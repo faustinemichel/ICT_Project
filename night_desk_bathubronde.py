@@ -84,7 +84,7 @@ predict_test_input_fn = tf.compat.v1.estimator.inputs.pandas_input_fn(
 
 embedded_text_feature_column = hub.text_embedding_column(
     key="sentence", 
-    module_spec=r"C:\Users\ASUS\Desktop\module\\")
+    module_spec="https://tfhub.dev/google/nnlm-en-dim128/1")
 
 #BUILDING 
 #We build a DNN classifier 
