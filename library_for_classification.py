@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Created on Mon May 25 09:42:33 2020
 @author: Gaël Miramond & Faustine Michel
@@ -98,3 +97,4 @@ def  object_recognition_classifier(number_of_classes, path_test_dataset, path_mo
     trgt_predict_txt.close()
     
     return
+

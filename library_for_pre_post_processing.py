@@ -1,7 +1,5 @@
-# -*- coding: utf-8 -*-
 """
 Created on Fri May 22 09:50:07 2020
-
 @author: Gael MIRAMOND & Faustine MICHEL
 All the usefull  functions 
 """
@@ -9,11 +7,12 @@ All the usefull  functions
 # import all the usefull libraries
 import os
 import numpy as np
+from pathlib import Path
 
 
 #%% Data pre-processing
 
-def separate_text(path,trgt_folder="txt_files/"):
+def separate_text(path,trgt_folder):
     src_obj_file=open(path,"r")# open a .obj file in reading mode
     strings_to_keep="" # Usefull information from teh .obj file
     name=""
@@ -59,7 +58,7 @@ def list_files(src,trgt):
     liste=sorted(os.listdir(src))
     trgt_file=open(trgt,"w")
     for line in liste:
-        trgt_file.write(line[0:-3]+'\n')
+        trgt_file.write(line[0:-4]+'\n')
     trgt_file.close()
     return
 
@@ -73,7 +72,7 @@ def pick_name(path,line_number,class_number):
         for i in range(line_number):
             to_write=src_file.readline()
         src_file.close()
-    trgt_file=open(str(class_number)+".txt","a")
+    trgt_file=open(os.path.join(Path(r"predictions\\"),Path(str(class_number)))+".txt","a")
     trgt_file.write(to_write)
     trgt_file.close()
     return
@@ -115,29 +114,3 @@ def results_processing(path_file_names,path_file_predicted_labels):
         pick_name(path_file_names,i+1,tab[i])
     
     return
-#%%PREDICTIONS 
-    
-def get_predictions(estimator, input_fn):
-   return [x for x in estimator.predict(input_fn=input_fn,predict_keys="probabilities")]
-
-def best_classes_and_probabilities(estimator,predict_test_input_fn):
-    predictions=get_predictions(estimator, predict_test_input_fn)
-    predicted_classes=[]
-    best_probability=[]
-    for i in range (len(predictions)) :
-        val_max=max(predictions[i]["probabilities"])
-        tempo= np.where(predictions[i]["probabilities"]==val_max)
-        tempo_class=tempo[0][0]
-        predicted_classes.append(tempo_class)
-        best_probability.append(val_max)
-    return predicted_classes,best_probability
-
-def ambiguity_reject(tab_predictions,tab_probabilities, threshold):
-    tab_predictions_with_reject=[]
-    for i in range(0,len(tab_predictions)):
-        if tab_probabilities[i]<threshold:
-            tab_predictions_with_reject.append(-1)
-        else:
-            tab_predictions_with_reject.append(tab_predictions[i])
-    return tab_predictions_with_reject
-
